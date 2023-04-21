@@ -28,18 +28,18 @@ export default class MainScreen extends Screen {
         super.render(params);
         const { scaleX, scaleY } = params;
 
+        // Original coordinate system based on inner
+        // application viewPortWidth and viewPortHeight params
         const w = 500;
         const h = 500;
         const x = this.viewPortWidth - w;
         const y = this.viewPortHeight - h;
 
+        // Screen scaling example
         const scaledW = w / scaleX;
         const scaledH = h * scaledW / w;
         const scaledX = this.app.viewPortWidth / scaleX - scaledW;
         const scaledY = this.app.viewPortHeight / scaleY - scaledH;
-
-        console.log(scaledW);
-        console.log(scaledH);
 
         this.context.fillStyle = "red";
         this.context.fillRect(scaledX, scaledY, scaledW, scaledH);
