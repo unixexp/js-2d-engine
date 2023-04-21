@@ -1,12 +1,19 @@
 export default class App {
 
-    constructor(canvasElementId, viewPortWidth, viewPortHeight, onLoad) {
+    constructor(canvasElementId, worldWidth, worldHeight, onLoad) {
         this.keys = [];
         this.screenInitialized = false;
         this.paused = false;
         this.canvas = null;
-        this.viewPortWidth = viewPortWidth;
-        this.viewPortHeight = viewPortHeight;
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
+        this.viewPortScaleRatioX = 0;
+        this.viewPortScaleRatioY = 0;
+        this.viewPortScaleRatio = 0;
+        this.worldMouseX = 0;
+        this.worldMouseY = 0;
+        this.mouseX = 0;
+        this.mouseY = 0;
 
         window.addEventListener("keydown", e => {
             if (this.keys.findIndex(k => k === e.key) === -1)
@@ -17,18 +24,18 @@ export default class App {
             this.keys.splice(this.keys.indexOf(e.key));
         });
 
-        window.addEventListener("resize", e => {
-            this.canvasStyle = window.getComputedStyle(this.canvas);
-            const canvasStyle = window.getComputedStyle(this.canvas);
-            this.canvas.width = parseInt(canvasStyle.width);
-            this.canvas.height = parseInt(canvasStyle.height);
-        });
+        window.addEventListener("mousemove", e => {
+            if (e.target.id === canvasElementId) {
+                const targetRect = e.target.getBoundingClientRect();
+                this.mouseX = e.clientX - targetRect.left;
+                this.mouseY = e.clientY - targetRect.top;
+            }
+        })
 
         window.addEventListener("load", () => {
             this.canvas = document.getElementById(canvasElementId);
-            const canvasStyle = window.getComputedStyle(this.canvas);
-            this.canvas.width = parseInt(canvasStyle.width);
-            this.canvas.height = parseInt(canvasStyle.height);
+            this.refreshScaling();
+            this.run();
             onLoad(this);
         });
 
@@ -67,12 +74,38 @@ export default class App {
 
             lastTime = timestamp;
 
+            this.refreshScaling();
+
             if (this.screen && this.screenInitialized && !this.paused) {
                 this.screen.update(params);
                 this.screen.clear();
                 this.screen.render(params);
             }
         }
+    }
+
+    scaleByX(value) {
+        return value / this.viewPortScaleRatioX;
+    }
+
+    scaleByY(value) {
+        return value / this.viewPortScaleRatioY;
+    }
+
+    scaleByMinAxis(value) {
+        return value / this.viewPortScaleRatio;
+    }
+
+    refreshScaling() {
+        const canvasStyle = window.getComputedStyle(this.canvas);
+        this.canvas.width = parseInt(canvasStyle.width);
+        this.canvas.height = parseInt(canvasStyle.height);
+
+        this.viewPortScaleRatioX = this.worldWidth / this.canvas.width;
+        this.viewPortScaleRatioY = this.worldHeight / this.canvas.height;
+        this.viewPortScaleRatio = Math.max(this.viewPortScaleRatioX, this.viewPortScaleRatioY);
+        this.worldMouseX = this.mouseX * this.viewPortScaleRatioX;
+        this.worldMouseY = this.mouseY * this.viewPortScaleRatioY;
     }
 
 }

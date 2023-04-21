@@ -26,23 +26,55 @@ export default class MainScreen extends Screen {
 
     render(params) {
         super.render(params);
-        const { scaleX, scaleY } = params;
+        
+        const border = {
+            x: 0,
+            y: 0,
+            w: this.app.worldWidth,
+            h: this.app.worldHeight,
+            color: "red"
+        }
 
-        // Original coordinate system based on inner
-        // application viewPortWidth and viewPortHeight params
-        const w = 500;
-        const h = 500;
-        const x = this.viewPortWidth - w;
-        const y = this.viewPortHeight - h;
+        const rectangle = {
+            x: this.app.worldMouseX,
+            y: this.app.worldMouseY,
+            w: 128,
+            h: 128,
+            color: "black"
+        }
 
-        // Screen scaling example
-        const scaledW = w / scaleX;
-        const scaledH = h * scaledW / w;
-        const scaledX = this.app.viewPortWidth / scaleX - scaledW;
-        const scaledY = this.app.viewPortHeight / scaleY - scaledH;
+        const mouseLegend = {
+            x: Math.round(this.app.worldMouseX),
+            y: Math.round(this.app.worldMouseY),
+            xPos: rectangle.x,
+            yPos: rectangle.y - 10,
+            color: "green"
+        }
 
-        this.context.fillStyle = "red";
-        this.context.fillRect(scaledX, scaledY, scaledW, scaledH);
+        this.context.strokeStyle = border.color;
+        this.context.strokeRect(
+            this.app.scaleByX(border.x),
+            this.app.scaleByY(border.y),
+            this.app.scaleByX(border.w),
+            this.app.scaleByY(border.h),
+        );
+
+        this.context.fillStyle = rectangle.color;
+        this.context.fillRect(
+            this.app.scaleByX(rectangle.x),
+            this.app.scaleByY(rectangle.y),
+            this.app.scaleByX(rectangle.w),
+            this.app.scaleByY(rectangle.h),
+        );
+
+        this.context.fillStyle = mouseLegend.color;
+        this.context.font = `${this.app.scaleByMinAxis(48)}px NineteenNinetySeven`;
+        this.context.fillText(
+            `${mouseLegend.x}, ${mouseLegend.y}`,
+            this.app.scaleByX(mouseLegend.xPos),
+            this.app.scaleByY(mouseLegend.yPos)
+        );
+
     }
 
 }

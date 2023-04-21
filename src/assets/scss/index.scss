@@ -1,3 +1,5 @@
+@import "./reset.scss";
+
 @font-face {
 	font-family: 'NineteenNinetySeven';
 	src: url('../fonts/NINETEENNINETYSEVEN-11XB.ttf') format('truetype'),
@@ -6,18 +8,13 @@
 	font-style: normal;
 }
 
-* {
-    font-family: inherit;
-}
-
 canvas {
-    border: 1px solid #999;
     width: 100%;
     height: 100%;
 }
 
 .container {
     font-family: "NineteenNinetySeven";
-    width: 1000px;
-    height: 1000px;
+    width: 500px;
+    height: 500px;
 }
