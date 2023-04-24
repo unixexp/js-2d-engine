@@ -1,7 +1,7 @@
-import Screen from "../../engine/components/screen";
+import Component from "../../engine/components/component";
 import { loadImage } from "../../engine/utils/files";
 
-export default class MainScreen extends Screen {
+export default class MainScreen extends Component {
 
     constructor(app) {
         super(app);
@@ -56,7 +56,7 @@ export default class MainScreen extends Screen {
             this.app.scaleByX(border.x),
             this.app.scaleByY(border.y),
             this.app.scaleByX(border.w),
-            this.app.scaleByY(border.h),
+            this.app.scaleByY(border.h)
         );
 
         this.context.fillStyle = rectangle.color;

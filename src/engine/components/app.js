@@ -2,7 +2,7 @@ export default class App {
 
     constructor(canvasElementId, worldWidth, worldHeight, onLoad) {
         this.keys = [];
-        this.screenInitialized = false;
+        this.componentInitialized = false;
         this.paused = false;
         this.canvas = null;
         this.worldWidth = worldWidth;
@@ -41,10 +41,10 @@ export default class App {
 
     }
 
-    async setScreen(screen) {
-        this.screenInitialized = false;
-        this.screenInitialized = await screen.init();
-        this.screen = screen;
+    async setComponent(component) {
+        this.componentInitialized = false;
+        this.componentInitialized = await component.init();
+        this.component = component;
     }
 
     pause() {
@@ -76,10 +76,10 @@ export default class App {
 
             this.refreshScaling();
 
-            if (this.screen && this.screenInitialized && !this.paused) {
-                this.screen.update(params);
-                this.screen.clear();
-                this.screen.render(params);
+            if (this.component && this.componentInitialized && !this.paused) {
+                this.component.update(params);
+                this.component.clear();
+                this.component.render(params);
             }
         }
     }

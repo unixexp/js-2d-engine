@@ -1,4 +1,4 @@
-export default class Screen {
+export default class Component {
 
     constructor(app) {
         this.id = Math.floor(Math.random() * 1000);
@@ -8,7 +8,7 @@ export default class Screen {
     }
 
     async init() {
-        // Implement this method in extended custom screens
+        // Implement this method in extended custom components
         // Do not forget call super.update(params); first
         const fontSize = 48;
 
@@ -31,13 +31,13 @@ export default class Screen {
         this.context.clearRect(
             0,
             0,
-            this.canvas.width,
-            this.canvas.height
+            this.app.scaleByX(this.app.worldWidth),
+            this.app.scaleByY(this.app.worldWidth)
         );
     }
 
     update(params) {
-        // Implement this method in extended custom screens
+        // Implement this method in extended custom components
         // Do not forget call super.update(params); first
 
         // All game logic should be implemented in virtual world
@@ -45,7 +45,7 @@ export default class Screen {
     }
 
     render(params) {
-        // Implement this method in extended custom screens
+        // Implement this method in extended custom components
         // Do not forget call super.render(params); first
 
         // To correct rendering world coordinate system to
