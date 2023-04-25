@@ -1,38 +1,25 @@
 export default class Component {
 
-    constructor(app) {
+    constructor(app, x, y, width, height) {
         this.id = Math.floor(Math.random() * 1000);
         this.app = app;
         this.canvas = app.canvas;
         this.context = this.canvas.getContext("2d");
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     async init() {
-        // Implement this method in extended custom components
-        // Do not forget call super.update(params); first
-        const fontSize = 48;
-
-        const w = this.app.scaleByX(this.app.worldWidth);
-        const h = this.app.scaleByY(this.app.worldHeight);
-
-        this.context.fillStyle = "black";
-        this.context.fillRect(0, 0, w, h);
-        this.context.font = `${this.app.scaleByMinAxis(fontSize)}px NineteenNinetySeven`;
-        this.context.fillStyle = "lightGreen";
-        const text = "Loading...";
-        const textMetrics = this.context.measureText(text);
-        const textWidth = textMetrics.width;
-        const x = w / 2 - textWidth / 2;
-        const y = h / 2;
-        this.context.fillText(text, x, y);
     }
 
     clear() {
         this.context.clearRect(
-            0,
-            0,
-            this.app.scaleByX(this.app.worldWidth),
-            this.app.scaleByY(this.app.worldWidth)
+            this.app.scaleByX(this.x),
+            this.app.scaleByY(this.y),
+            this.app.scaleByX(this.width),
+            this.app.scaleByY(this.height)
         );
     }
 

@@ -14,6 +14,7 @@ export default class App {
         this.worldMouseY = 0;
         this.mouseX = 0;
         this.mouseY = 0;
+        this.debug = 1;
 
         window.addEventListener("keydown", e => {
             if (this.keys.findIndex(k => k === e.key) === -1)
@@ -43,7 +44,13 @@ export default class App {
 
     async setComponent(component) {
         this.componentInitialized = false;
-        this.componentInitialized = await component.init();
+        try {
+            await component.init();
+        } catch(err) {
+            console.log(`Error init component ${component.constructor.name}: ${err}`);
+            return
+        }
+        this.componentInitialized = true;
         this.component = component;
     }
 
